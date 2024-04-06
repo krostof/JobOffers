@@ -15,11 +15,10 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-@SpringBootTest(classes = JobOffersApplication.class)
 @ActiveProfiles("integration")
+@SpringBootTest(classes = JobOffersApplication.class)
 @AutoConfigureMockMvc
 @Testcontainers
 public class BaseIntegrationTest {
@@ -27,24 +26,23 @@ public class BaseIntegrationTest {
     public static final String WIRE_MOCK_HOST = "http://localhost";
 
     @Autowired
+    public ObjectMapper objectMapper;
+
+    @Autowired
     public MockMvc mockMvc;
 
     @Container
-    public static final  MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
-
-    @Autowired
-    public ObjectMapper objectMapper;
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
     @RegisterExtension
-    public static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
+    public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
             .options(wireMockConfig().dynamicPort())
             .build();
 
     @DynamicPropertySource
-    public static void propertyOverdrive(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongo.db",mongoDBContainer::getReplicaSetUrl);
-//        registry.add("offer.http.client.config.uri",() -> WIRE_MOCK_HOST);
-//        registry.add("offer.http.client.config.port",() -> wireMockExtension.getPort());
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        registry.add("offer.http.client.config.uri", () -> WIRE_MOCK_HOST);
+        registry.add("offer.http.client.config.port", () -> wireMockServer.getPort());
     }
-
 }

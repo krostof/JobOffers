@@ -13,11 +13,11 @@ public class OfferFacadeTestConfiguration {
     OfferFacadeTestConfiguration() {
         this.fetcherTest = new FetcherTestImpl(
                 List.of(
-                        new JobOfferResponseDto("testTitle1", "testCompany1", 1234., "testUrl1"),
-                        new JobOfferResponseDto("testTitle2", "testCompany2", 2345., "testUrl2"),
-                        new JobOfferResponseDto("testTitle3", "testCompany3", 3456., "testUrl3"),
-                        new JobOfferResponseDto("testTitle4", "testCompany4", 8521., "testUrl4"),
-                        new JobOfferResponseDto("testTitle5", "testCompany5", 3698., "testUrl5")
+                        new JobOfferResponseDto("testTitle1", "testCompany1", "1234.", "testUrl1"),
+                        new JobOfferResponseDto("testTitle2", "testCompany2", "2345.", "testUrl2"),
+                        new JobOfferResponseDto("testTitle3", "testCompany3", "3456.", "testUrl3"),
+                        new JobOfferResponseDto("testTitle4", "testCompany4", "8521.", "testUrl4"),
+                        new JobOfferResponseDto("testTitle5", "testCompany5", "3698.", "testUrl5")
 
                 )
         );

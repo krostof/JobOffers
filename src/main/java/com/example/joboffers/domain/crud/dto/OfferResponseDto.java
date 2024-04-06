@@ -6,6 +6,6 @@ import lombok.Builder;
 public record OfferResponseDto(String id,
                         String companyName,
                         String position,
-                        Double salary,
+                               String salary,
                         String offerUrl) {
 }

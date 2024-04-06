@@ -5,6 +5,6 @@ import lombok.Builder;
 @Builder
 public record OfferRequestDto(String companyName,
                        String position,
-                       Double salary,
+                              String salary,
                        String offerUrl) {
 }

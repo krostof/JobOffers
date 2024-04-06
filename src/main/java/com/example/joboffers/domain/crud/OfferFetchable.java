@@ -4,7 +4,7 @@ import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
 
 import java.util.List;
 
-interface OfferFetchable {
+public interface OfferFetchable {
 
     List<JobOfferResponseDto> fetchOffers();
 

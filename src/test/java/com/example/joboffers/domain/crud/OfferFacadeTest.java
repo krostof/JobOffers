@@ -34,18 +34,18 @@ class OfferFacadeTest {
         // given
         OfferFacade offerFacade = new OfferFacadeTestConfiguration(
                 List.of(
-                        new JobOfferResponseDto("testTitle1", "testCompany1", 1234., "testUrl1"),
-                        new JobOfferResponseDto("testTitle2", "testCompany2", 2345., "testUrl2"),
-                        new JobOfferResponseDto("testTitle3", "testCompany3", 3456., "testUrl3"),
-                        new JobOfferResponseDto("testTitle4", "testCompany4", 8521., "testUrl4"),
-                        new JobOfferResponseDto("Junior", "Comarch", 1111., "https://someurl.pl/5"),
-                        new JobOfferResponseDto("Mid", "Finanteq", 2222., "https://someother.pl/6")
+                        new JobOfferResponseDto("testTitle1", "testCompany1", "1234.", "testUrl1"),
+                        new JobOfferResponseDto("testTitle2", "testCompany2", "2345.", "testUrl2"),
+                        new JobOfferResponseDto("testTitle3", "testCompany3", "3456.", "testUrl3"),
+                        new JobOfferResponseDto("testTitle4", "testCompany4", "8521.", "testUrl4"),
+                        new JobOfferResponseDto("Junior", "Comarch", "1111.", "https://someurl.pl/5"),
+                        new JobOfferResponseDto("Mid", "Finanteq", "2222.", "https://someother.pl/6")
                 )
         ).offerFacadeForTests();
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "estUrl1"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "estUrl2"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "estUrl3"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "estUrl4"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "estUrl1"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "estUrl2"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "estUrl3"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "estUrl4"));
         assertThat(offerFacade.findAllOffers()).hasSize(4);
 
         // when
@@ -70,10 +70,10 @@ class OfferFacadeTest {
         OfferFacade offerFacade = new OfferFacadeTestConfiguration(List.of()).offerFacadeForTests();
 
         // when
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "1"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "2"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "3"));
-        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "4"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "1"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "2"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "3"));
+        offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "4"));
 
         // then
         assertThat(offerFacade.findAllOffers()).hasSize(4);
@@ -83,7 +83,7 @@ class OfferFacadeTest {
     public void should_find_offer_by_id_when_offer_was_saved() {
         // given
         OfferFacade offerFacade = new OfferFacadeTestConfiguration(List.of()).offerFacadeForTests();
-        OfferResponseDto offerResponseDto = offerFacade.saveOffer(new OfferRequestDto("companyName", "position", 1111., "1"));
+        OfferResponseDto offerResponseDto = offerFacade.saveOffer(new OfferRequestDto("companyName", "position", "1111.", "1"));
         // when
         OfferResponseDto offerById = offerFacade.findOfferById(offerResponseDto.id());
 
@@ -92,7 +92,7 @@ class OfferFacadeTest {
                 .id(offerResponseDto.id())
                 .companyName("companyName")
                 .position("position")
-                .salary(1111.)
+                .salary("1111.")
                 .offerUrl("1")
                 .build()
         );
@@ -117,12 +117,12 @@ class OfferFacadeTest {
     public void should_throw_duplicate_key_exception_when_with_offer_url_exists() {
         // given
         OfferFacade offerFacade = new OfferFacadeTestConfiguration(List.of()).offerFacadeForTests();
-        OfferResponseDto offerResponseDto = offerFacade.saveOffer(new OfferRequestDto("id", "asds", 1111., "hello.pl"));
+        OfferResponseDto offerResponseDto = offerFacade.saveOffer(new OfferRequestDto("id", "asds", "1111.", "hello.pl"));
         String savedId = offerResponseDto.id();
         assertThat(offerFacade.findOfferById(savedId).id()).isEqualTo(savedId);
         // when
         Throwable thrown = catchThrowable(() -> offerFacade.saveOffer(
-                new OfferRequestDto("cx", "vc", 1111., "hello.pl")));
+                new OfferRequestDto("cx", "vc", "1111.", "hello.pl")));
 
         // then
         AssertionsForClassTypes.assertThat(thrown)

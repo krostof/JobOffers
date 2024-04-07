@@ -1,4 +1,4 @@
-package com.example.joboffers.infrastructure.offersfetcher;
+package com.example.joboffers.infrastructure.dto;
 
 public record JobOfferDto(
         String title,

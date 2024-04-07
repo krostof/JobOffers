@@ -24,12 +24,12 @@ class OfferRepositoryImplTest implements OfferRepository{
                 .anyMatch(offer -> offerUrl.equals(offer.getOfferUrl()));
     }
 
-    @Override
+
     public Optional<Offer> findByOfferUrl(final String offerUrl) {
         return Optional.empty();
     }
 
-    @Override
+
     public List<Offer> saveAll(final List<Offer> offers) {
         return offers.stream()
                 .map(this::save)

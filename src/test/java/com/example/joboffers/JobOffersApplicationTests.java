@@ -8,6 +8,7 @@ class JobOffersApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

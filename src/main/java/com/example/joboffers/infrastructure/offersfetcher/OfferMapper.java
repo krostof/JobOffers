@@ -1,6 +1,7 @@
 package com.example.joboffers.infrastructure.offersfetcher;
 
 import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
+import com.example.joboffers.infrastructure.dto.JobOfferDto;
 
 public class OfferMapper {
     static JobOfferResponseDto mapJobOfferDtoToJobOfferResponseDto(JobOfferDto jobOfferDto) {

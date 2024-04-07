@@ -1,17 +1,27 @@
 package joboffers;
 
 import com.example.joboffers.domain.crud.OfferFetchable;
+import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
+import com.example.joboffers.domain.crud.dto.OfferResponseDto;
+import com.example.joboffers.infrastructure.scheduler.FetchOffersSchedulers;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Log4j2
 public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJobOffersResponse{
 
     @Autowired
     OfferFetchable offerFetchable;
+    @Autowired
+    FetchOffersSchedulers fetchOffersSchedulers;
 
     @Test
     public void should_user_fetch_offers() throws Exception{
@@ -19,9 +29,12 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
         wireMockServer.stubFor(WireMock.get("/offers")
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())
+                        .withHeader("Content-Type", "application/json")
                         .withBody(bodyWithZeroOffers())));
-//        List<JobOfferResponseDto> jobOfferResponseDtos = offerFetchable.fetchOffers();
 //        step 2: scheduler ran 1st time and made GET to external server and system added 0 offers to database
+        List<JobOfferResponseDto> offerResponseDtos = offerFetchable.fetchOffers();
+        log.info(offerResponseDtos.toString());
+
 //        step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
 //        step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
 //        step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)

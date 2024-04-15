@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -15,12 +17,11 @@ import java.util.List;
 public class FetchOffersSchedulers {
 
     private final OfferFacade offerFacade;
-
-
-//    @Scheduled(cron = "*/10 * * * * *")
-//    public List<OfferResponseDto> downloadOffersFromServer(){
-//
-//        return offerFacade.fetchAllOffersAndSaveAllIfNotExists();
-//    }
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+    @Scheduled(cron = "${http.offers.scheduler.request.delay}")
+    public List<OfferResponseDto> updateJobOfferDatabase(){
+        log.info("Started offers fetching {}",simpleDateFormat.format(new Date()));
+        return offerFacade.fetchAllOffersAndSaveAllIfNotExists();
+    }
 
 }

@@ -28,21 +28,16 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
     public List<JobOfferResponseDto> fetchOffers() {
         try {
             log.info("Fetching offers");
-            String urlForService = getUri();
-            final String url = UriComponentsBuilder.fromHttpUrl(urlForService).toUriString();
+            final String url = getUrl();
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
 
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<JobOfferDto[]> responseEntity = restTemplate
-                    .exchange(url, HttpMethod.GET, entity, JobOfferDto[].class);
-
-            if (responseEntity.getStatusCode() != HttpStatus.OK) {
-                log.error("Error response received: " + responseEntity.getStatusCode());
-                throw new ResponseStatusException(responseEntity.getStatusCode());
-            }
+            ResponseEntity<JobOfferDto[]> responseEntity = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    requestEntity,
+                    JobOfferDto[].class);
 
             JobOfferDto[] jobOffers = responseEntity.getBody();
 
@@ -58,6 +53,11 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
             log.error("Error while fetching offers using http client: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private String getUrl() {
+        String urlForService = getUri();
+        return UriComponentsBuilder.fromHttpUrl(urlForService).toUriString();
     }
 
     private String getUri() {

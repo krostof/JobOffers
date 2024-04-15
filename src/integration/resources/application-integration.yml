@@ -2,13 +2,8 @@ http:
   offers:
     scheduler:
       request:
-        delay: PT1S
+        delay: "*/1 * * * * *"
 
 scheduling:
-  enabled: false
+  enabled: true
 
-spring:
-  cache:
-    type: none
-    redis:
-      time-to-live: PT10S

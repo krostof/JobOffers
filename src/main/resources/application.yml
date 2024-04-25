@@ -20,7 +20,7 @@ http:
   offers:
     scheduler:
       request:
-        delay: "* */15 * * * *"
+        delay: "*/30 * * * * *"
 
 scheduling:
   enabled: true

@@ -2,6 +2,7 @@ package com.example.joboffers.domain.crud;
 
 
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,7 +99,7 @@ class OfferRepositoryImplTest implements OfferRepository{
     @Override
     public Offer save(final Offer offer) {
         if (existsByOfferUrl(offer.getOfferUrl())){
-            throw new OfferDuplicateException(offer.getOfferUrl());
+            throw new DuplicateKeyException("Offer with URL: hello.pl exist!");
         }
         UUID uuid = UUID.randomUUID();
         offer.setId(uuid.toString());

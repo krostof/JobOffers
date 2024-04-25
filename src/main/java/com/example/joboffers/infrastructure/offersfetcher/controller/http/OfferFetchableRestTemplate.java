@@ -1,8 +1,9 @@
-package com.example.joboffers.infrastructure.offersfetcher;
+package com.example.joboffers.infrastructure.offersfetcher.controller.http;
 
 import com.example.joboffers.domain.crud.OfferFetchable;
 import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
 import com.example.joboffers.infrastructure.dto.JobOfferDto;
+import com.example.joboffers.infrastructure.offersfetcher.OfferMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;

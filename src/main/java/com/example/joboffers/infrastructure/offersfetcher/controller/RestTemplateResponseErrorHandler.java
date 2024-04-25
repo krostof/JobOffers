@@ -1,4 +1,4 @@
-package com.example.joboffers.infrastructure.offersfetcher;
+package com.example.joboffers.infrastructure.offersfetcher.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;

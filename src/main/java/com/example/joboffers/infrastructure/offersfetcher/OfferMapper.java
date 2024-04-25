@@ -4,7 +4,7 @@ import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
 import com.example.joboffers.infrastructure.dto.JobOfferDto;
 
 public class OfferMapper {
-    static JobOfferResponseDto mapJobOfferDtoToJobOfferResponseDto(JobOfferDto jobOfferDto) {
+    public static JobOfferResponseDto mapJobOfferDtoToJobOfferResponseDto(JobOfferDto jobOfferDto) {
         return JobOfferResponseDto.builder()
                 .title(jobOfferDto.title())
                 .company(jobOfferDto.company())

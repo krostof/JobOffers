@@ -10,16 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.hamcrest.Matchers.*;
@@ -71,7 +67,7 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
 //        step 8: there are 2 new offers in external HTTP server
 //        step 9: scheduler ran 2nd time and made GET to external server and system added 2 new offers with ids: 1000 and 2000 to database
 //        step 10: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 2 offers with ids: 1000 and 2000
-//        step 11: user made GET /offers/9999 and system returned NOT_FOUND(404) with message “Offer with id 9999 not found”
+//        step 11: user made GET /offers/9999 and system returned NOT_FOUND(404) with message “Offer with id: 9999 not found”
         ResultActions performGetOffersOnNonExistingId = mockMvc.perform(get("/offers/9999")
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -83,6 +79,22 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
 //        step 13: there are 2 new offers in external HTTP server
 //        step 14: scheduler ran 3rd time and made GET to external server and system added 2 new offers with ids: 3000 and 4000 to database
 //        step 15: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 4 offers with ids: 1000,2000, 3000 and 4000
+//        step 16: user made POST /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned CREATED(201)
+        ResultActions performPostOfferRequest = mockMvc.perform(post("/offers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""            
+                                {
+                                  "companyName": "string",
+                                  "position": "string",
+                                  "salary": "string",
+                                  "offerUrl": "string"
+                                }            
+                        """.trim()));
+
+        performPostOfferRequest.andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message",is("Offer was successfully created!")))
+                .andExpect(jsonPath("$.status",is("CREATED")));
 
     }
 

@@ -1,6 +1,7 @@
-package com.example.joboffers.infrastructure.offersfetcher;
+package com.example.joboffers.infrastructure.offersfetcher.controller.http;
 
 import com.example.joboffers.domain.crud.OfferFetchable;
+import com.example.joboffers.infrastructure.offersfetcher.controller.RestTemplateResponseErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

@@ -3,6 +3,7 @@ package com.example.joboffers.domain.crud;
 import com.example.joboffers.domain.crud.dto.JobOfferResponseDto;
 import com.example.joboffers.domain.crud.dto.OfferRequestDto;
 import com.example.joboffers.domain.crud.dto.OfferResponseDto;
+import com.mongodb.DuplicateKeyException;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
@@ -126,7 +127,7 @@ class OfferFacadeTest {
 
         // then
         AssertionsForClassTypes.assertThat(thrown)
-                .isInstanceOf(OfferDuplicateException.class)
+                .isInstanceOf(DuplicateKeyException.class)
                 .hasMessage("Offer with URL: hello.pl exist!");
     }
 

@@ -1,4 +1,4 @@
-package joboffers;
+package joboffers.fetchoferstest;
 
 public interface SampleJobOffersResponse {
 

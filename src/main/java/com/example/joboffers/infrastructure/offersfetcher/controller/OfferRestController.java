@@ -18,7 +18,7 @@ import java.util.List;
 @Log4j2
 public class OfferRestController {
 
-    OfferFacade offerFacade;
+    private final OfferFacade offerFacade;
 
     @GetMapping("/offers")
     ResponseEntity<List<OfferResponseDto>> getOffers() {

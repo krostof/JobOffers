@@ -7,8 +7,7 @@ import com.example.joboffers.infrastructure.offersfetcher.OfferMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,7 +41,7 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
 
             JobOfferDto[] jobOffers = responseEntity.getBody();
 
-            if (jobOffers == null || jobOffers.length == 0) {
+            if (jobOffers.length == 0) {
                 log.info("Response is empty");
                 return Collections.emptyList();
             }
@@ -50,10 +49,13 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
             return Arrays.stream(jobOffers)
                     .map(OfferMapper::mapJobOfferDtoToJobOfferResponseDto)
                     .collect(Collectors.toList());
-        } catch (ResourceAccessException e) {
-            log.error("Error while fetching offers using http client: " + e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        } catch (RestClientException e) {
+        log.error("Error while fetching offers using http client: " + e.getMessage());
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (Exception e) {
+        log.error("Unexpected error while fetching offers using http client: " + e.getMessage());
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     }
 
     private String getUrl() {

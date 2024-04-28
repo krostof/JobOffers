@@ -1,10 +1,11 @@
-package joboffers;
+package joboffers.fetchoferstest;
 
 import com.example.joboffers.domain.crud.OfferFetchable;
 import com.example.joboffers.domain.crud.OfferRepository;
 import com.example.joboffers.domain.crud.dto.OfferResponseDto;
 import com.example.joboffers.infrastructure.scheduler.FetchOffersSchedulers;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import joboffers.BaseIntegrationTest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,9 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"username\": \"someUser\", \"password\": \"somePassword\" }"));
 
-        perform.andExpect(status().isOk())
+        perform.andExpect(status().isUnauthorized())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.username", is("someUser")));
+                .andExpect(jsonPath("$.message", is("Bad Credentials")));
 
 //        step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
 //        step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)

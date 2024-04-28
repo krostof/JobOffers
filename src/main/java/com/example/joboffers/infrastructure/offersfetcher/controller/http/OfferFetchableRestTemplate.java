@@ -28,7 +28,8 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
     public List<JobOfferResponseDto> fetchOffers() {
         try {
             log.info("Fetching offers");
-            final String url = getUrl();
+            String url = uri + ":" + port + "/offers";
+            url = UriComponentsBuilder.fromHttpUrl(url).toUriString();
 
             HttpHeaders headers = new HttpHeaders();
             final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
@@ -46,24 +47,19 @@ public class OfferFetchableRestTemplate implements OfferFetchable {
                 return Collections.emptyList();
             }
 
-            return Arrays.stream(jobOffers)
-                    .map(OfferMapper::mapJobOfferDtoToJobOfferResponseDto)
-                    .collect(Collectors.toList());
-        } catch (RestClientException e) {
-        log.error("Error while fetching offers using http client: " + e.getMessage());
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-    } catch (Exception e) {
-        log.error("Unexpected error while fetching offers using http client: " + e.getMessage());
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+            return convertToResponse(jobOffers);
+        } catch (Exception e) {
+            ResponseStatusException responseException = new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            String errorMsg = e instanceof RestClientException ? "Error while fetching offers using http client: "
+                    : "Unexpected error while fetching offers using http client: ";
+            log.error(errorMsg + e.getMessage());
+            throw responseException;
+        }
     }
 
-    private String getUrl() {
-        String urlForService = getUri();
-        return UriComponentsBuilder.fromHttpUrl(urlForService).toUriString();
-    }
-
-    private String getUri() {
-        return uri + ":" + port + "/offers";
+    private List<JobOfferResponseDto> convertToResponse(JobOfferDto[] jobOffers){
+        return Arrays.stream(jobOffers)
+                .map(OfferMapper::mapJobOfferDtoToJobOfferResponseDto)
+                .collect(Collectors.toList());
     }
 }

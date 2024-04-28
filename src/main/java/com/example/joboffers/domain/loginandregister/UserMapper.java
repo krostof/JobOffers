@@ -7,7 +7,7 @@ import com.example.joboffers.domain.loginandregister.dto.UserRegisterDto;
 class UserMapper {
     static Users mapUserRegisterDtoToUser(final UserRegisterDto dto) {
         return Users.builder()
-                .name(dto.name())
+                .username(dto.name())
                 .password(dto.password())
                 .build();
     }
@@ -15,7 +15,7 @@ class UserMapper {
     static UserDto mapUserToUserDto(final Users users) {
         return UserDto.builder()
                 .id(users.getId())
-                .name(users.getName())
+                .name(users.getUsername())
                 .password(users.getPassword())
                 .build();
     }
@@ -23,7 +23,7 @@ class UserMapper {
     static RegisterInfoDto mapUserToRegisterInfoDto(final Users users, String message) {
         return RegisterInfoDto.builder()
                 .message(message)
-                .name(users.getName())
+                .name(users.getUsername())
                 .build();
     }
 }

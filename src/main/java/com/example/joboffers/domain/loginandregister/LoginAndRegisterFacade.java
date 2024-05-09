@@ -23,8 +23,9 @@ public class LoginAndRegisterFacade {
                     .orElseThrow(() -> new BadCredentialsException(USER_NOT_FOUND));
     }
 
-    RegisterInfoDto register(UserRegisterDto dto) {
+    public RegisterInfoDto register(UserRegisterDto dto) {
         Users users = loginRepository.save(mapUserRegisterDtoToUser(dto));
+        loginRepository.save(users);
         return UserMapper.mapUserToRegisterInfoDto(users,REGISTER_MESSAGE);
     }
 

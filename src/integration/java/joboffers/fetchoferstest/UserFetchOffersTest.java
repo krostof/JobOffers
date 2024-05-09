@@ -3,18 +3,22 @@ package joboffers.fetchoferstest;
 import com.example.joboffers.domain.crud.OfferFetchable;
 import com.example.joboffers.domain.crud.OfferRepository;
 import com.example.joboffers.domain.crud.dto.OfferResponseDto;
+import com.example.joboffers.infrastructure.dto.GetTokenResponseDto;
+import com.example.joboffers.infrastructure.loginandregister.RegistrationResultDto;
 import com.example.joboffers.infrastructure.scheduler.FetchOffersSchedulers;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import joboffers.BaseIntegrationTest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -55,10 +59,36 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
                 .andExpect(jsonPath("$.message", is("Bad Credentials")));
 
 //        step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
+        ResultActions performGetOnOffers = mockMvc.perform(get("/offers")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        performGetOnOffers.andExpect(status().isUnauthorized());
 //        step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
+        ResultActions performPostOnRegister = mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"username\": \"someUser\", \"password\": \"somePassword\" }"));
+
+        performPostOnRegister.andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.username", is("someUser")))
+                .andExpect(jsonPath("$.message",is("User registered successfully")));
+
 //        step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
+
+        ResultActions performPostOnToken = mockMvc.perform(post("/token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"username\": \"someUser\", \"password\": \"somePassword\" }"));
+
+        performPostOnToken.andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.token", matchesPattern(Pattern.compile("^([A-Za-z0-9-_=]+\\.)+([A-Za-z0-9-_=])+\\.?$"))))
+                .andExpect(jsonPath("$.message",is("Token was successfully granted!")));
+        String contentAsString = performPostOnToken.andReturn().getResponse().getContentAsString();
+        GetTokenResponseDto resultDto = objectMapper.readValue(contentAsString, GetTokenResponseDto.class);
+        String token = resultDto.token();
 //        step 7: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 0 offers
         ResultActions performGetOffers = mockMvc.perform(get("/offers")
+                        .header("Authorization","Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON));
 
         performGetOffers.andExpect(status().isOk())
@@ -70,6 +100,7 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
 //        step 10: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 2 offers with ids: 1000 and 2000
 //        step 11: user made GET /offers/9999 and system returned NOT_FOUND(404) with message “Offer with id: 9999 not found”
         ResultActions performGetOffersOnNonExistingId = mockMvc.perform(get("/offers/9999")
+                .header("Authorization","Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON));
 
         performGetOffersOnNonExistingId.andExpect(status().isNotFound())
@@ -82,6 +113,7 @@ public class UserFetchOffersTest extends BaseIntegrationTest implements SampleJo
 //        step 15: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 4 offers with ids: 1000,2000, 3000 and 4000
 //        step 16: user made POST /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned CREATED(201)
         ResultActions performPostOfferRequest = mockMvc.perform(post("/offers")
+                .header("Authorization","Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""            
                                 {

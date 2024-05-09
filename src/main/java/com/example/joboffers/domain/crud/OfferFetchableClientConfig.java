@@ -10,10 +10,6 @@ import java.time.Clock;
 public class OfferFetchableClientConfig {
 
     @Bean
-    Clock clock(){return Clock.systemUTC();
-    }
-
-    @Bean
     OfferFacade offerFacade(OfferFetchable offerFetchable, OfferRepository repository) {
         OfferService offerService = new OfferService(offerFetchable, repository);
         return new OfferFacade(repository, offerService);

@@ -4,6 +4,7 @@ import joboffers.BaseIntegrationTest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.is;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OfferUrlDuplicatedErrorIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @WithMockUser
     public void should_throw_duplicated_key_exception_when_post_offers_with_same_url() throws Exception {
 
         ResultActions perform = mockMvc.perform(post("/offers")

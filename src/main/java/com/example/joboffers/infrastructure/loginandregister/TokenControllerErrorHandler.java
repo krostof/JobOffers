@@ -1,4 +1,4 @@
-package com.example.joboffers.infrastructure.controller;
+package com.example.joboffers.infrastructure.loginandregister;
 
 
 import lombok.extern.log4j.Log4j2;

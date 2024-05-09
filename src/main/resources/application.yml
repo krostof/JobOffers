@@ -1,12 +1,19 @@
 spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:63792}
+  cache:
+    type: redis
+    redis:
+      time-to-live: PT60M
   data:
     mongodb:
       auto-index-creation: true
-      uri: mongodb://root:example@localhost:27017/offers?authSource=admin&retryWrites=true&w=majority
-
+      uri: mongodb://admin:admin@localhost:27017/offers
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+
 offer:
   http:
     client:
@@ -20,8 +27,13 @@ http:
   offers:
     scheduler:
       request:
-        delay: "*/30 * * * * *"
+        delay: PT3H
 
 scheduling:
   enabled: true
 
+auth:
+  jwt:
+    secret: ${JWT_SECRET:eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTc0NjYzNDE5NiwiaWF0IjoxNzE1MDk4MTk2fQ.yrOZiRmY6Ta4H4gibhiUlzzx0wJa4h9XqMjzWcpE2Bk}
+    expirationDays: 30
+    issuer: job-offers-backend

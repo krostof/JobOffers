@@ -14,7 +14,6 @@ class UserMapper {
 
     static UserDto mapUserToUserDto(final Users users) {
         return UserDto.builder()
-                .id(users.getId())
                 .name(users.getUsername())
                 .password(users.getPassword())
                 .build();
@@ -22,6 +21,7 @@ class UserMapper {
 
     static RegisterInfoDto mapUserToRegisterInfoDto(final Users users, String message) {
         return RegisterInfoDto.builder()
+                .id(users.getId())
                 .message(message)
                 .name(users.getUsername())
                 .build();

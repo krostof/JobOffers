@@ -1,4 +1,4 @@
-package com.example.joboffers.infrastructure.controller;
+package com.example.joboffers.infrastructure.loginandregister;
 
 import org.springframework.http.HttpStatus;
 

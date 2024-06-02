@@ -5,7 +5,6 @@ import com.example.joboffers.infrastructure.dto.GetTokenResponseDto;
 import com.example.joboffers.infrastructure.security.JwtAuthenticatorFacade;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,7 @@ public class TokenController {
         jwtAuthenticatorFacade.authenticateAndGenerateToken(requestDto);
         final GetTokenResponseDto jwtResponse = jwtAuthenticatorFacade.authenticateAndGenerateToken(requestDto);
         log.info(requestDto.username()+" got token.");
-        return ResponseEntity.status(HttpStatus.CREATED).body(jwtResponse);
+        return ResponseEntity.ok(jwtResponse);
     }
 
 }

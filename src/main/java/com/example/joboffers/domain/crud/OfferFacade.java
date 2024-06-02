@@ -3,6 +3,7 @@ package com.example.joboffers.domain.crud;
 import com.example.joboffers.domain.crud.dto.OfferRequestDto;
 import com.example.joboffers.domain.crud.dto.OfferResponseDto;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ public class OfferFacade {
     private final OfferRepository offerRepository;
     private final OfferService offerService;
 
+    @Cacheable("jobOffers")
     public List<OfferResponseDto> findAllOffers() {
         return offerRepository.findAll()
                 .stream()

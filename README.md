@@ -18,6 +18,8 @@ This is a monolithic web application built using the Spring Boot framework. The 
 **Job Listings:** Authenticated users can browse through job listings specifically targeted at junior Java developers.
 
 **Scheduling:** Job listings are updated periodically using a scheduler to ensure the latest job opportunities are available.
+![image](https://github.com/user-attachments/assets/6b03e85a-f9a2-4972-9323-029bc6497375)
+
 # Technologies Used
 **Java:** 17
 
@@ -35,7 +37,7 @@ This is a monolithic web application built using the Spring Boot framework. The 
 
 **Unit Testing:** JUnit5, Mockito, AssertJ
 
-**Integration Testing:** SpringBootTest, MockMvc, SpringSecurityTest, Wiremock, Testcontainers, Awaitility
+**Integration Testing:** SpringBootTest, MockMvc, SpringSecurityTest, Wiremock, Testcontainers
 
 **Mocking:** Wiremock
 

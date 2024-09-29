@@ -55,6 +55,7 @@ This is a monolithic web application built using the Spring Boot framework. The 
 
 
 ## API Reference
+![image](https://github.com/user-attachments/assets/e9116e74-0d88-4ecd-97e6-54861e3a50e2)
 
 #### User register
 

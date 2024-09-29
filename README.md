@@ -21,6 +21,7 @@ This is a monolithic web application built using the Spring Boot framework. The 
 
 # Technologies Used
 ![image](https://github.com/user-attachments/assets/9f807a4a-f936-4c5a-a14a-38b68241b49b)
+
 **Java:** 17
 
 **Framework:** Spring Boot
